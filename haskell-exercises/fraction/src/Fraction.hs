@@ -4,61 +4,74 @@ type Fraction = (Int, Int)
 
 -- Implement the `add` Function
 -- Para sumarlos, deben tener el mismo denominador.
+
 add :: Fraction -> Fraction -> Fraction -- (Int, Int) -> (Int, Int) -> (Int, Int)
-add n d =  -- n es una fraction y d es otra. Son tuplas de la forma (Int, Int)
-    nNumerator = getNumerator n     -- nNumerator guarda el numerador de la fraction n
-    dNumerator = getNumerator d     -- dNumerator guarda el numerador de la fraction d
-    nDenominator = getDenominator n -- nDenominator guarda el denominador de la fraction n.
-    dDenominator = getDenominator d -- dDenominator guarda el denominador de la fraction d.
-    fraction1Modified = getFraction1Modified nNumerator nDenominator  dDenominator
-    fraction2Modified = getFraction2Modified dNumerator dDenominator nDenominator
-    | nDenominator != dDenominator = add fraction1Modified fraction2Modified -- Hace la suma con las fracciones modificadas
-    | otherwise = Fraction(nNumerator + dNumerator, nDenominator) -- Poner de denominator nDenominator o dDenominator es lo mismo porque en este caso serian iguales.
-
-getFraction1Modified:: Int -> Int -> Int -> Int -- nNumerator, nDenominator, dDenominator  y dNumerator, dDenominator, nDenominator
-    let
-        newN = nNumerator * dDenominator
-        newD = nDenominator * dDenominator
-    in Fraction(newN, newD)
-
-getFraction2Modified:: Int -> Int -> Int -> Fraction
-    let
-        newN = dNumerator * nDenominator
-        newD = dDenominator * nDenominator
-    in Fraction(newN, newD)
+add n d -- n es una fraction y d es otra. Son tuplas de la forma (Int, Int)
+      | getDenominator n /= getDenominator d =
+        let
+            f1 = getFraction1Modified n (getDenominator d)
+            f2 = getFraction2Modified d (getDenominator n)
+        in add f1 f2                                                    -- Hace la suma con las fracciones modificadas
+      | otherwise = (getNumerator n + getNumerator d, getDenominator n) -- Poner de denominator nDenominator o dDenominator es lo mismo porque en este caso serian iguales.
 
 
-getNumerator:: (Int, Int) -> Int
-getNumerator (n, _) = numerator -- Con esto obtengo el numerator de la fraction
+getFraction1Modified:: Fraction -> Int -> Fraction -- nNumerator, nDenominator, dDenominator  y dNumerator, dDenominator, nDenominator
+getFraction1Modified (nF1, dF1) dF2 = (nF1 * dF2, dF1 * dF2)
 
-getDenominator:: (Int, Int) -> Int
-getDenominator (_, d) = denominator -- Con esto la idea es obtener el denominador de la  fraction
+
+getFraction2Modified:: Fraction -> Int -> Fraction
+getFraction2Modified (nF2, dF2) dF1 = (nF2 * dF1, dF2 * dF1)
+
+getNumerator:: Fraction -> Int
+getNumerator (n, _) = n -- Con esto obtengo el numerator de la fraction
+
+getDenominator:: Fraction -> Int
+getDenominator (_, d) = d -- Con esto la idea es obtener el denominador de la  fraction
 
     
 -- Implement the `sub` Function
+-- Similar a la suma, tambien deben tener el mismo denominador para poder restarse.
 
 sub :: Fraction -> Fraction -> Fraction
-sub n d = error "Implement it"
+sub n d
+    | getDenominator n /= getDenominator d =
+      let
+        f1 = getFraction1Modified n (getDenominator d)
+        f2 = getFraction2Modified d (getDenominator n)
+      in sub f1 f2
+    | otherwise = (getNumerator n - getNumerator d, getDenominator n)
+
 
 -- Implement the `mul` Function
 
 mul :: Fraction -> Fraction -> Fraction
-mul n d =
-     nNumerator = getNumerator n
-     dNumerator = getNumerator d
-     nDenominator = getDenominator n
-     dDenominator = getDenominator d
-     Fraction (nNumerator*dNumerator, nDenominator*dDenominator)
+mul n d = (getNumerator n * getNumerator d, getDenominator n * getDenominator d)
 
 -- Implement the `divide` Function
 
 divide :: Fraction -> Fraction -> Fraction
-divide n d = error "Implement it"
+divide n d = mul n (inverted d)
+
+inverted:: Fraction -> Fraction
+inverted d = (getDenominator d, getNumerator d) -- Armo la fraccion invertida. Formo denominador/numerador
 
 -- Implement the `hcf` Function
 
+
+-- En lugar de meternos a descomponer por nros primos. Una forma facil de sacarlo, es mediante el Algoritmo de Euclides.
+
 hcf :: Int -> Int -> Int
-hcf n d = error "Implement it" -- En este caso, tanto n como d, son nros.
+hcf n 0 = n
+hcf 0 d = d
+hcf n d = hcf d (n `mod` d) -- Por como funciona, debe hallar el resto, para ello mod es el resto de la division entre n y d.
+
+-- checkIfNumberIsPrime:: Int -> Bool
+-- checkIfNumberIsPrime number =
+
+-- findPrimeNumbers :: Int -> [Int] -- De 24, tenemos los siguientes nros primos [2, 2, 2, 3]
+-- findPrimerNumbers number =
+
+
 
 
     
