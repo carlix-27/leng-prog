@@ -5,6 +5,13 @@ type Fraction = (Int, Int)
 -- Implement the `add` Function
 -- Para sumarlos, deben tener el mismo denominador.
 
+-- Tuplas
+-- fst -> Te permite tomar el primer elemento de la tupla
+-- snd -> te permite tomar el segundo elemento de la tupla
+-- Son metodos predefinidos.
+
+
+-- Rehacerlo mas sencillo -> mas simple.
 add :: Fraction -> Fraction -> Fraction -- (Int, Int) -> (Int, Int) -> (Int, Int)
 add n d -- n es una fraction y d es otra. Son tuplas de la forma (Int, Int)
       | getDenominator n /= getDenominator d =
@@ -23,7 +30,7 @@ getFraction2Modified:: Fraction -> Int -> Fraction
 getFraction2Modified (nF2, dF2) dF1 = (nF2 * dF1, dF2 * dF1)
 
 getNumerator:: Fraction -> Int
-getNumerator (n, _) = n -- Con esto obtengo el numerator de la fraction
+getNumerator (n, _) = n -- Con esto obtengo el numerator de la fraction. Aplicamos pattern matching. Defino un patron, y muestro el match que quiero.
 
 getDenominator:: Fraction -> Int
 getDenominator (_, d) = d -- Con esto la idea es obtener el denominador de la  fraction
