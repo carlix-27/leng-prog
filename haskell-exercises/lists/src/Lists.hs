@@ -34,9 +34,19 @@ difference (x:xs) ys
         | otherwise = difference xs ys -- El elemento x esta en ys, analizo con el resto de los elementos. Para buscar cuales no estan dentro de mi ys.
 
 insert:: Int -> [Int] -> [Int] -- Es posible usar la notacion (x:xs) para poder agregar un elemento.
-insert x xs -- El elemento que mete debe respetar el orden que tiene si ya hay una lista agregada
-      |
-      | otherwise = x:xs -- Agrega el elemento a la lista
+insert _ [] = _ : [] -- Si la lista esta vacia directamente agrega el valor.
+
+insert x (y:ys)
+      | x <= y = x:ys -- Agrega el elemento a la lista -- TODO: Evaluar que pasa con los valores de y.
+      | otherwise = insert x ys
+
+
+-- Casos Base
+-- Que pasa si la lista esta vacia? -> Insertas normalmente
+-- Que pasa si solo hay un elemento? -> Chequeas si es mayor al elemento a insertar. Lo insertas donde corresponda.
+-- Que pasa si el elemento a insertar, ya esta en la lista? -> Chequear donde insertar el elemento.
+
+
 
 insertionSort :: [Int] -> [Int]
 insertionSort = error "Implement it"
