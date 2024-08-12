@@ -34,11 +34,11 @@ difference (x:xs) ys
         | otherwise = difference xs ys -- El elemento x esta en ys, analizo con el resto de los elementos. Para buscar cuales no estan dentro de mi ys.
 
 insert:: Int -> [Int] -> [Int] -- Es posible usar la notacion (x:xs) para poder agregar un elemento.
-insert _ [] = _ : [] -- Si la lista esta vacia directamente agrega el valor.
+insert _ [] = _ : [] -- Si la lista esta vacia directamente agrega el valor. Esto puede ocurrir tambien, si el elemento es mas grande que todo el resto.
 
 insert x (y:ys)
-      | x <= y = x:ys -- Agrega el elemento a la lista -- TODO: Evaluar que pasa con los valores de y.
-      | otherwise = insert x ys
+      | x <= y = y: (x:ys) -- Agrega el elemento a la lista, tiene en cuenta el valor de y porque asi almacena el duplicado. DUPLICADOS. Tiene en cuenta el valor inicial de y, para evitar perder valores ya analizados.
+      | otherwise = y: (insert x ys) -- Tiene en cuenta el valor inicial de y, para evitar perder los valores ya analizados.
 
 
 -- Casos Base
@@ -49,7 +49,19 @@ insert x (y:ys)
 
 
 insertionSort :: [Int] -> [Int]
-insertionSort = error "Implement it"
+insertionSort (x: (y:ys)) = if(y == []) x:ys
+insertionSort (x:(y:ys))
+             | y < x = insertionSort (y: (insertionSort (x:ys))) -- Esto sortea.
+             | otherwise = x:(y:ys) -- Caso donde los elementos ya estan ordenados, y no hace falta hacer nuevamente el insertion.
+
+-- Anotaciones
+-- Primero Sorteas para ordenar todos elementos de la lista
+    -- Como sorteamos?
+        --1. Analizamos el elemento que tenemos a la izquierda, si es mayor -> swap, si es menor, esta ordenado.
+        --2. Asi con cada elemento que tenemos en la lista.
+-- Luego insertas tranquilamente, usando el metodo insert que desarrolle arriba.
+
+-- TODO: Implementar insertionSort con 'foldr'
 
 binaryToDecimal :: [Int] -> Int
 binaryToDecimal = error "Implement it"
