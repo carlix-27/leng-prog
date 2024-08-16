@@ -69,6 +69,10 @@ main = hspec $ do
       insertionSort [7,5..1] `shouldBe` [1, 3, 5, 7]
     it "Duplicates" $ do 
       insertionSort [1, 7, 1, 9, 5, 9] `shouldBe` [1, 1, 5, 7, 9, 9]
+    it "Example" $ do
+       insertionSort [5, 1, 9, 3, 1] `shouldBe` [1, 1, 3, 5, 9]
+    it "Another Example" $ do
+       insertionSort [3, 1, 2, 3, 4, 2] `shouldBe` [1, 2, 2, 3, 3, 4]
       
 
   describe "numeral systems" $ do

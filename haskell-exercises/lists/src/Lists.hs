@@ -48,17 +48,27 @@ insert x (y:ys)
 
 
 -- TODO
-insertionSort :: [Int] -> [Int]
-insertionSort [] = []
-insertionSort x = x
-insertionSort (x:[]) = [x]
-insertionSort (x: y: z: ys) -- FIXME: Es probable que el insertionSort primero, este de mas.
-             | z >= x && y >= x = x: y: z: insertionSort(ys) -- Chequeo que contemple que las sublistas formadas esten ordenadas. Por como esta diseñado, van a ordenarse y con z. Para ese momento.
-             | y < x = insertionSort(y : insertionSort (x: z: ys)) -- Esto sortea. Tenes que ver esta condicion tambien.
-             | y > x = insertionSort(x : insertionSort(y: z: ys)) -- Esto sortea acorde a si un elemento es mas grande. Aca hay un drama.
-             | otherwise = x: y: z: ys -- Caso donde se llego al final del array.
+--insert:: Int -> [Int] -> [Int]
+--insert x [] = x : []
+--
+--insert x (y:ys)
+--      | x <= y = x:y:ys .
+--      | otherwise = y: (insert x ys)
 
--- Z no mas sirve para ver si los elementos de las sublistas estan ordenadas.
+insertionSort:: [Int] -> [Int] -- Mi forma de resolverlo - Quiza es poco optima. La solucion de chat, fue mas optima.. Debido a que el insert que implemente esta bien pensado
+insertionSort [] = []
+insertionSort [x] = [x]  -- Lista con un solo elemento
+insertionSort (x: y: ys)
+            | y < x = insertionSort(y: (insertionSort(x:ys)))
+            | x < y = x: (insertionSort(y: ys))
+            | otherwise = insert x (insertionSort (y:ys)) -- Insert solventa los casos donde sean iguales los valores.
+
+---- insertionSort utilizando la función insert  - Chat gpt
+--insertionSort :: [Int] -> [Int]
+--insertionSort [] = []
+--insertionSort (x:xs) = insert x (insertionSort xs)
+
+
 -- Anotaciones
 -- Primero Sorteas para ordenar todos elementos de la lista
     -- Como sorteamos?
