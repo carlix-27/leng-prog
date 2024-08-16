@@ -79,7 +79,14 @@ insertionSort (x: y: ys)
 -- TODO: Implementar insertionSort con 'foldr'
 
 binaryToDecimal :: [Int] -> Int
-binaryToDecimal = error "Implement it"
+binaryToDecimal list = binaryToDecimalAux list (length(list) - 1)
+
+binaryToDecimalAux :: [Int] -> Int -> Int
+binaryToDecimalAux [] _ = 0
+binaryToDecimalAux (n:ls) c =  n * 2^c  +  binaryToDecimalAux (ls) (c - 1)
+
+
+
     
 toDecimal :: Int -> [Int] -> Int
 toDecimal = error "Implement it"
