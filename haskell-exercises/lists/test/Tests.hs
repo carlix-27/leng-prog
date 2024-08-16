@@ -9,7 +9,8 @@ import Lists (
    binaryToDecimal, toDecimal, toDec,
    decimal,
    firsts,
-   binaryAdd)
+   binaryAdd,
+   merge)
 
 main :: IO ()
 main = hspec $ do
@@ -101,3 +102,9 @@ main = hspec $ do
     it "\"\" + \"\" = \"0\"" $ do 
           binaryAdd "" ""  `shouldBe` "0"  
               
+
+  describe "merge" $ do
+     it "Empty List" $ do
+        merge [1, 2, 3][] `shouldBe` [1, 2, 3]
+     it "Already sorted" $ do
+        merge [7, 8, 9] [3, 4, 5] `shouldBe` [3, 4, 5, 7, 8, 9]

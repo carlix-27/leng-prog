@@ -1,7 +1,7 @@
 module Lists (member, union, intersection, difference,
-              insert, insertionSort,
+              insert, insertionSort, firsts,
               binaryToDecimal, toDecimal, toDec, decimal,
-              binaryAdd) where
+              binaryAdd, merge) where
   
 import Data.Char(digitToInt)  
 
@@ -34,10 +34,10 @@ difference (x:xs) ys
         | otherwise = difference xs ys -- El elemento x esta en ys, analizo con el resto de los elementos. Para buscar cuales no estan dentro de mi ys.
 
 insert:: Int -> [Int] -> [Int] -- Es posible usar la notacion (x:xs) para poder agregar un elemento.
-insert _ [] = _ : [] -- Si la lista esta vacia directamente agrega el valor. Esto puede ocurrir tambien, si el elemento es mas grande que todo el resto.
+insert x [] = x : [] -- Si la lista esta vacia directamente agrega el valor. Esto puede ocurrir tambien, si el elemento es mas grande que todo el resto.
 
 insert x (y:ys)
-      | x <= y = y: (x:ys) -- Agrega el elemento a la lista, tiene en cuenta el valor de y porque asi almacena el duplicado. DUPLICADOS. Tiene en cuenta el valor inicial de y, para evitar perder valores ya analizados.
+      | x <= y = x:y:ys -- Agrega el elemento a la lista, tiene en cuenta el valor de y porque asi almacena el duplicado. DUPLICADOS. Tiene en cuenta el valor inicial de y, para evitar perder valores ya analizados.
       | otherwise = y: (insert x ys) -- Tiene en cuenta el valor inicial de y, para evitar perder los valores ya analizados.
 
 
@@ -47,13 +47,18 @@ insert x (y:ys)
 -- Que pasa si el elemento a insertar, ya esta en la lista? -> Chequear donde insertar el elemento.
 
 
-
+-- TODO
 insertionSort :: [Int] -> [Int]
-insertionSort (x: (y:ys)) = if(y == []) x:ys
-insertionSort (x:(y:ys))
-             | y < x = insertionSort (y: (insertionSort (x:ys))) -- Esto sortea.
-             | otherwise = x:(y:ys) -- Caso donde los elementos ya estan ordenados, y no hace falta hacer nuevamente el insertion.
+insertionSort [] = []
+insertionSort x = x
+insertionSort (x:[]) = [x]
+insertionSort (x: y: z: ys) -- FIXME: Es probable que el insertionSort primero, este de mas.
+             | z >= x && y >= x = x: y: z: insertionSort(ys) -- Chequeo que contemple que las sublistas formadas esten ordenadas. Por como esta diseñado, van a ordenarse y con z. Para ese momento.
+             | y < x = insertionSort(y : insertionSort (x: z: ys)) -- Esto sortea. Tenes que ver esta condicion tambien.
+             | y > x = insertionSort(x : insertionSort(y: z: ys)) -- Esto sortea acorde a si un elemento es mas grande. Aca hay un drama.
+             | otherwise = x: y: z: ys -- Caso donde se llego al final del array.
 
+-- Z no mas sirve para ver si los elementos de las sublistas estan ordenadas.
 -- Anotaciones
 -- Primero Sorteas para ordenar todos elementos de la lista
     -- Como sorteamos?
@@ -70,7 +75,7 @@ toDecimal :: Int -> [Int] -> Int
 toDecimal = error "Implement it"
     
 toDec::Int -> String -> Int
-toDec base s =  = error "Implement it"
+toDec base s =   error "Implement it"
 
 -- Same as `toDec` But use a list comprehension
 
@@ -85,3 +90,11 @@ firsts = error "Implement it"
 
 binaryAdd::String -> String -> String
 binaryAdd  = error "Implement it"
+
+merge:: (Ord a) => [a] -> [a] -> [a]
+merge xs [] = xs
+merge [] ys = ys
+merge (x:xs) (y:ys)
+    | x < y = x: merge xs (y:ys)
+    | x == y = x : y : merge xs ys -- Chequeo donde las listas sean iguales.
+    | otherwise = y: merge (x:xs) ys
