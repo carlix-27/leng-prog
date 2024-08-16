@@ -89,7 +89,12 @@ binaryToDecimalAux (n:ls) c =  n * 2^c  +  binaryToDecimalAux (ls) (c - 1)
 
     
 toDecimal :: Int -> [Int] -> Int
-toDecimal = error "Implement it"
+toDecimal _ [] = 0
+toDecimal b ls = toDecimalAux b ls (length(ls) - 1)
+
+toDecimalAux:: Int -> [Int] -> Int -> Int -- Para solventar el error de pattern matching debe haber un caso base aca. Para que sepa cuando cortar
+toDecimalAux _ [] _ = 0
+toDecimalAux b (n:ls) c = n*b^c + toDecimalAux b ls (c-1)
     
 toDec::Int -> String -> Int
 toDec base s =   error "Implement it"
