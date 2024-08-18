@@ -127,7 +127,7 @@ intMapComprehension:: [Char] -> [Int]
 intMapComprehension listC = [digitToInt c | c <- listC]
 
 firsts::[a] -> [[a]]
-firsts = error "Implement it"
+firsts x = [take n x | n <- [1 .. length(x)]] -- take toma ciertos nros y te devuelve una lista de estos, de una lista que le especifiquemos.
 
 -- Given two String that represents numbers in binary implement the 'binaryAdd' function
 -- DO NOT USE a predefined '+' operation

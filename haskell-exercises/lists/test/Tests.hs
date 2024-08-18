@@ -98,6 +98,7 @@ main = hspec $ do
       firsts [1, 3, 5] `shouldBe` [[1], [1, 3], [1, 3, 5]]
     it "Hello" $ do          
       firsts "Hello" `shouldBe` ["H", "He", "Hel", "Hell", "Hello"]
+
   describe "binary add" $ do    
     it "2 + 1 = 3" $ do 
       binaryAdd "11" "1"  `shouldBe` "100"
