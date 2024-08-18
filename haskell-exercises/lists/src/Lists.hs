@@ -132,8 +132,16 @@ firsts x = [take n x | n <- [1 .. length(x)]] -- take toma ciertos nros y te dev
 -- Given two String that represents numbers in binary implement the 'binaryAdd' function
 -- DO NOT USE a predefined '+' operation
 
-binaryAdd::String -> String -> String
-binaryAdd  = error "Implement it"
+binaryAdd::String -> String -> String -- TODO
+binaryAdd a b = binaryAddAux (reverse(a)) (reverse(b)) ('')
+
+binaryAddAux:: String -> String -> String -> String
+binaryAddAux (a: as) (b: bs) r
+        | a === '0' && b === '0' = '0': r
+        | a === '1' && b === '0' || a === '0' && b === '1' = '1':r
+        | a === '1' && b === '1' = '0': r                    -- Caso borde donde hay acarreo.
+        binaryAddAux as bs r
+
 
 merge:: (Ord a) => [a] -> [a] -> [a]
 merge xs [] = xs
