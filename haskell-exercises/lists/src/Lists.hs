@@ -120,8 +120,11 @@ intMap listC = map (\c -> digitToInt c) listC -- Funcion map, va de lista a list
 
 -- Same as `toDec` But use a list comprehension
 
-decimal:: Int -> String -> Int
-decimal  = error "Implement it"
+decimal:: Int -> String -> Int -- Como usamos la funcion zip aca? Y lo de list comprehension lo usamos en intMapComprenhension
+decimal base s = toDecimal base (intMapComprehension s)
+
+intMapComprehension:: [Char] -> [Int]
+intMapComprehension listC = [digitToInt c | c <- listC]
 
 firsts::[a] -> [[a]]
 firsts = error "Implement it"
