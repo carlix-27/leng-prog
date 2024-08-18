@@ -3,7 +3,7 @@ module Lists (member, union, intersection, difference,
               binaryToDecimal, toDecimal, toDec, decimal,
               binaryAdd, merge) where
   
-import Data.Char(digitToInt)  
+import Data.Char(digitToInt)  -- En el caso de toDec, va a servir pasa para cada caracter al entero que representa.
 
 member:: Int -> [Int] -> Bool
 member _ []      = False -- Si tenes un nro X, pero la lista es vacia, tira false. Caso base
@@ -96,12 +96,31 @@ toDecimalAux:: Int -> [Int] -> Int -> Int -- Para solventar el error de pattern 
 toDecimalAux _ [] _ = 0
 toDecimalAux b (n:ls) c = n*b^c + toDecimalAux b ls (c-1)
     
-toDec::Int -> String -> Int
-toDec base s =   error "Implement it"
+toDec::Int -> String -> Int -- S puede ser considerada una lista de char String === [Char]
+toDec base s =
+  let
+    listInt = intMap s
+  in
+    toDecimal base listInt
+
+
+
+-- Un string, puede ser considerado, una lista de caracteres. Tenemos basicamente "73" -> ['7', '3']
+
+-- Tengo que pasar cada caracter al nro que verdaderamente representa
+
+intMap:: [Char] -> [Int]
+intMap listC = map (\c -> digitToInt c) listC -- Funcion map, va de lista a lista.
+--    [Char] =            [Int]
+
+-- c es cada caracter de la lista de caracteres (listC)
+
+-- map f [x] -> [y]
+-- f, es una funcion. Y [x] es una lista de n elementos de cualquier tipo. [y] es una lista del tipo especificado
 
 -- Same as `toDec` But use a list comprehension
 
-decimal::Int -> String -> Int
+decimal:: Int -> String -> Int
 decimal  = error "Implement it"
 
 firsts::[a] -> [[a]]
