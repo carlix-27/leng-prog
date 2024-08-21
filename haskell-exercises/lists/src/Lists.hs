@@ -133,15 +133,20 @@ firsts x = [take n x | n <- [1 .. length(x)]] -- take toma ciertos nros y te dev
 -- DO NOT USE a predefined '+' operation
 
 binaryAdd::String -> String -> String -- TODO
-binaryAdd a b = binaryAddAux (reverse(a)) (reverse(b)) ('')
+binaryAdd a b = foldr (++) " " addBit a b
+
+addBit:: String -> String -> String
+
+
 
 binaryAddAux:: String -> String -> String -> String
+binaryAdd '' '' = '0'
 binaryAddAux (a: as) (b: bs) r
         | a === '0' && b === '0' = '0': r
         | a === '1' && b === '0' || a === '0' && b === '1' = '1':r
         | a === '1' && b === '1' = '0': r                    -- Caso borde donde hay acarreo.
         binaryAddAux as bs r
-
+-- funcion aux, que recibe el acarreo actual y las dos listas -> Acarreo nuevo, el caracter que le falta para sumar.
 
 merge:: (Ord a) => [a] -> [a] -> [a]
 merge xs [] = xs
