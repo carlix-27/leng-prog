@@ -78,6 +78,7 @@ insertionSort (x: y: ys)
 
 -- TODO: Implementar insertionSort con 'foldr'
 
+-- Este binaryToDecimal tambien puede implementarse con la funcion foldl
 binaryToDecimal :: [Int] -> Int
 binaryToDecimal list = binaryToDecimalAux list (length(list) - 1)
 
