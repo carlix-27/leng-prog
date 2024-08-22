@@ -132,11 +132,10 @@ firsts x = [take n x | n <- [1 .. length(x)]] -- take toma ciertos nros y te dev
 -- Given two String that represents numbers in binary implement the 'binaryAdd' function
 -- DO NOT USE a predefined '+' operation
 
-binaryAdd::String -> String -> String -- TODO
+binaryAdd::String -> String -> String
 binaryAdd a b = foldr (++) " " addBit a b
 
 addBit:: String -> String -> String
-
 
 
 binaryAddAux:: String -> String -> String -> String
