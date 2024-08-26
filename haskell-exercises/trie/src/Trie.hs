@@ -56,6 +56,9 @@ toList trie = travelTrie trie [] -- Te devuelve el caracter que busca. Y los bit
 travelTrie:: Trie a -> Bits -> [(a, Bits)] -- Mi idea es tener una lista que vaya almacenando lo que se recorrio en base a si va a un subarbol u otro
 travelTrie (Leaf a) bits = [(a, bits)]
 travelTrie trie bits = travelTrie (left trie) (bits ++ [F]) ++ travelTrie (right trie) (bits ++ [T]) -- Inicialmente la lista bits va a estar vacia y se va a ir llenando acorde recorre el arbol.
+-- Cuando concatenamos esta accion aplica a listas en este caso, por eso ponemos [T] y [F]
+-- Como lo hacemos recursivo, analizamos primero el arbol left y luego el right
+
 
 
 
