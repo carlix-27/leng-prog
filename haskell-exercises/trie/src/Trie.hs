@@ -57,7 +57,9 @@ travelTrie:: Trie a -> Bits -> [(a, Bits)] -- Mi idea es tener una lista que vay
 travelTrie (Leaf a) bits = [(a, bits)]
 travelTrie trie bits = travelTrie (left trie) (bits ++ [F]) ++ travelTrie (right trie) (bits ++ [T]) -- Inicialmente la lista bits va a estar vacia y se va a ir llenando acorde recorre el arbol.
 -- Cuando concatenamos esta accion aplica a listas en este caso, por eso ponemos [T] y [F]
--- Como lo hacemos recursivo, analizamos primero el arbol left y luego el right
+-- Como lo hacemos recursivo, analizamos primero el arbol left y luego el right, las concatenamos para hacer la lista de tuplas. En relacion a si tiene o no nodos izq y derecho.
+
+
 
 
 
