@@ -1,7 +1,6 @@
 module Trie  (Trie(..), left, right, find, decode, toList) where
 
 import Bit
-import Data.Char(chr)
 
 data Trie a =  Leaf a | Trie a :-: Trie a deriving(Eq, Show) -- Add the Type definition deriving (Eq, Show)
 
@@ -26,45 +25,34 @@ right ( _ :-: Leaf a) = Leaf a
 
 
 find::Bits -> Trie a -> a
-find [] (Leaf a) = a -- Caso base, donde llega a una hoja. Devuelve el caracter que tiene asociado esa hoja.
--- find (bit:bits) (Leaf a) = error "This element not exist in this Binary Trie" -- Caso donde se pida algo que no existe en el arbol.
+find [] (Leaf a) = a -- Caso base, donde llega a una hoja. Devuelve el caracter que tiene asociado esa hoja..
 find (bit: bits) (Leaf a) = a
 find (bit: bits) trie
      | bit == F = find bits (left trie)
      | bit == T = find bits (right trie)
 
 
-
--- Como resulta decode, si lo encaro por este lado?
-charAt:: Bit -> Char -- El bit es F o es T. La transformacion numerica de esa cadena, la puedo hacer segun 0 o 1. Y ese conjunto de numbers. Pasarlo al number correspondiente. Y luego al char.
-charAt bit =
-       let listOfN = case bit of
-                   F -> [0]
-                   T -> [1]
-       in chr (bitsToInt listOfN) -- Pasa el numero hallado a caracter.
-
-bitsToInt:: [Int] -> Int -- Teorema fundamental de la numeracion para pasar la representacion binaria en un nro.
-bitsToInt list = bitsToIntAux list (length(list) - 1)
-
-bitsToIntAux :: [Int] -> Int -> Int
-bitsToIntAux [] _ = 0
-bitsToIntAux (n:ls) c =  n * 2^c  +  bitsToIntAux (ls) (c - 1)
-
--- bitsToInt list = foldl (\acc bit -> acc * 2 + bit) 0 -- Chequea bien como hace esto. acc que es? Un acumulador que pasamos inicialmente en 0. Y vamos sumando el valor entero del bit. CG
-
-
-decode::Bits -> Trie Char -> String -- String - [Char] -- TODO: Evalua como funciona el decode en este caso, como lo esta resolviendo.
+decode::Bits -> Trie Char -> String -- String - [Char]
 decode [] _ = [] -- Le ponemos esto para que sepa cuando cortar.
 decode bits trie =
           let
-            character = find bits trie
-            anotherBits = tail bits -- Debe analizar el resto de la lista para evitar que tengamos el mismo caracter nuevamente. Pidiendo el tail, devuelve todos los elementos menos el head.
+            (character, anotherBits) = findDecode bits trie -- Debe analizar el resto de la lista para evitar que tengamos el mismo caracter nuevamente. Pidiendo el tail, devuelve todos los elementos menos el head.
 
           in character : (decode anotherBits trie) -- Tengo que tener en cuenta que siga analizando la cadena de bits que falta analizar
 
 
+findDecode::Bits -> Trie a -> (a, Bits) -- Con este metodo lo que hacemos es analizar el resto de los bits que nos quedan pendientes.
+findDecode [] (Leaf a) = (a, []) -- Caso base, donde llega a una hoja. Devuelve el caracter que tiene asociado esa hoja.
+findDecode bits (Leaf a) = (a, bits)
+findDecode (bit: bits) trie
+     | bit == F = findDecode bits (left trie)
+     | bit == T = findDecode bits (right trie)
 
 
-toList::Trie a -> [(a, Bits)] -- Es probable que tenga que usar el bitAt.
+toList::Trie a -> [(a, Bits)] -- TODO
 toList (Leaf a) = []
-toList trie = [()] --?
+toList trie = 
+
+
+
+
