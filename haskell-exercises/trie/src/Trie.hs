@@ -68,3 +68,5 @@ travelTrie trie bits = travelTrie (left trie) (bits ++ [F]) ++ travelTrie (right
 
 
 
+
+
