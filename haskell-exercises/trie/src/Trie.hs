@@ -49,9 +49,16 @@ findDecode (bit: bits) trie
      | bit == T = findDecode bits (right trie)
 
 
-toList::Trie a -> [(a, Bits)] -- TODO
+toList::Trie a -> [(a, Bits)]
 toList (Leaf a) = []
-toList trie = 
+toList trie = travelTrie trie [] -- Te devuelve el caracter que busca. Y los bits que lo representan.
+
+travelTrie:: Trie a -> Bits -> [(a, Bits)] -- Mi idea es tener una lista que vaya almacenando lo que se recorrio en base a si va a un subarbol u otro
+travelTrie (Leaf a) bits = [(a, bits)]
+travelTrie trie bits = travelTrie (left trie) (bits ++ [F]) ++ travelTrie (right trie) (bits ++ [T]) -- Inicialmente la lista bits va a estar vacia y se va a ir llenando acorde recorre el arbol.
+
+
+
 
 
 
