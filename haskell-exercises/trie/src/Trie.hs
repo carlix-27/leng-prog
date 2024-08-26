@@ -27,7 +27,8 @@ right ( _ :-: Leaf a) = Leaf a
 
 find::Bits -> Trie a -> a
 find [] (Leaf a) = a -- Caso base, donde llega a una hoja. Devuelve el caracter que tiene asociado esa hoja.
--- find _ (Leaf a) = a --error "This element not exist in this Binary Trie"-- Caso donde se pida algo que no existe en el arbol.
+-- find (bit:bits) (Leaf a) = error "This element not exist in this Binary Trie" -- Caso donde se pida algo que no existe en el arbol.
+find (bit: bits) (Leaf a) = a
 find (bit: bits) trie
      | bit == F = find bits (left trie)
      | bit == T = find bits (right trie)
@@ -52,7 +53,7 @@ bitsToIntAux (n:ls) c =  n * 2^c  +  bitsToIntAux (ls) (c - 1)
 -- bitsToInt list = foldl (\acc bit -> acc * 2 + bit) 0 -- Chequea bien como hace esto. acc que es? Un acumulador que pasamos inicialmente en 0. Y vamos sumando el valor entero del bit. CG
 
 
-decode::Bits -> Trie Char -> String -- String - [Char]
+decode::Bits -> Trie Char -> String -- String - [Char] -- TODO: Evalua como funciona el decode en este caso, como lo esta resolviendo.
 decode [] _ = [] -- Le ponemos esto para que sepa cuando cortar.
 decode bits trie =
           let
@@ -64,5 +65,6 @@ decode bits trie =
 
 
 
-toList::Trie a -> [(a, Bits)]
-toList = error "Define it"
+toList::Trie a -> [(a, Bits)] -- Es probable que tenga que usar el bitAt.
+toList (Leaf a) = []
+toList trie = [()] --?

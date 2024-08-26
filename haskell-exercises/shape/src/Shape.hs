@@ -8,39 +8,50 @@ data Rectangle = Rectangle Point Point deriving (Eq, Show)
 
 -- A point from a tuple Pair
 point::(Double, Double) -> Point
-point = error "Implement it"
+point (a, b) = Point a b
 
 -- The origin
 origin::Point
-origin = error "Implement it"
+origin = Point 0 0
 
 -- Rectangle from a Tuple where (x0 y0) == origin
 rectangle::(Double, Double) -> Rectangle
-rectangle = error "Implement it" 
+rectangle (a, b)= Rectangle (origin) (Point a b)
 
-base::Rectangle -> Double
-base = error "Implement it"
+base::Rectangle -> Double -- Si tengo dos puntos y solo me interesa uno. Es posible usar pattern matching. Donde indico que es lo que me interesa de Rectangle.
+base (Rectangle _ (Point a _)) = a
 
 height::Rectangle -> Double
-height = error "Implement it"
+height (Rectangle _ (Point _ b)) = b
 
 -- Circle from radius
 circle::Double -> Circle
-circle = error "Implement it" 
+circle a = Circle (origin) (a)
 
 -- Clase Shift
 
-class Shift a where
+class Shift a where -- Suma a con a, y b con b para cada uno de lo que tenemos Point, Rectangle y Circle
    shift::a -> (Double, Double) -> a
    
 instance Shift Point where
-   shift  = error "Implement it"
-   
+    shift (Point a b) (c, d) = Point (a+c) (b+d)
+  -- shift (point (a, b)) (c, d) = Point (a+c) (b+d) -> Que esta mal aca?
+
 instance Shift Rectangle where
-   shift  = error "Implement it"
+  shift  (Rectangle _ (Point a b)) (c, d) = Rectangle (Point c d) (Point (a+c) (b+d))
    
 instance Shift Circle where
-   shift  = error "Implement it"
-   
+  shift (Circle _ (double)) (a, b)  = Circle (Point a b) double
+
 -- Define the Surface class
-   
+class Surface a where
+     surface :: a -> Double
+
+instance Surface Rectangle where
+  surface (Rectangle _ (Point a b)) = a * b
+  -- surface rectangle (a, b) = a * b
+
+instance Surface Circle where
+  surface (Circle _ r) = pi * r^2
+  -- surface circle r = pi * r^2
+
