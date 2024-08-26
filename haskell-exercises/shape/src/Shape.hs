@@ -28,8 +28,7 @@ height (Rectangle _ (Point _ b)) = b
 circle::Double -> Circle
 circle a = Circle (origin) (a)
 
--- Clase Shift
-
+-- Shift Class
 class Shift a where -- Suma a con a, y b con b para cada uno de lo que tenemos Point, Rectangle y Circle
    shift::a -> (Double, Double) -> a
    
