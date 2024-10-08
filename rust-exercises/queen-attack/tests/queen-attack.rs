@@ -26,7 +26,7 @@ fn queen_is_created_with_a_valid_position() {
 #[test]
 
 fn queens_that_can_not_attack() {
-    let white_queen = Queen::new(ChessPosition::new(2, 4).unwrap());
+    let white_queen = Queen::new(ChessPosition::new(2, 4).unwrap()); // unwrap accede a lo que hay ahi. En este caso la position. unwrap_or da valor por default mas alla de haber None.
     let black_queen = Queen::new(ChessPosition::new(6, 6).unwrap());
 
     assert!(!white_queen.can_attack(&black_queen));
