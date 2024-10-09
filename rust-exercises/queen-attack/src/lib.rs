@@ -23,14 +23,21 @@ impl ChessPosition {
 impl Queen {
     // if arrive to this part of the implementation -> position is valid. because we check invalid position previously with ChessPosition method.
     pub fn new(position: ChessPosition) -> Self {
-
+        let pos = position;
     }
+
+
 
     // I have two queens 'como' parameters.
     pub fn can_attack(&self, other: &Queen) -> bool {
-
-
-
-
+        if  self.position.0 == other.position.0 {                                              // Horizontal Attack -> rank1 == rank2
+            true
+        } else if self.position.1 == other.position.1 {                                       // Vertical Attack -> file1 == file2
+          true
+        } else if (self.position.0 - other.position.0).abs() == (self.position.1 - other.position.1).abs() {  // Diagonal Attack -> |rank1 - rank2| == |file1 - file2|
+            true
+        } else {
+            false
+        }
     }
 }
