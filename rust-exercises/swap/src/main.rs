@@ -1,6 +1,5 @@
 // Escribir la funcion swap, que intercambia los valores entre dos variables, Por ejemplo:
 
-use std::ptr::addr_of_mut;
 
 fn main() {
     let mut x = 100;
