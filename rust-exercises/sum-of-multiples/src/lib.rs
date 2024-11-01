@@ -20,7 +20,7 @@ pub fn take_multiplies(i: &u32, factors: &[u32]) -> bool {
 // analizando los tests, vemos que si pasamos como factor 0, i esta valiendo 0 tambien, por como hace el chequeo
 // devuelve false mi any, y por tanto solo tipo el valor que quedo de i, que es 0.
 
-// Todo: Lo que me queda haciendo ruido, es como reacciona ante la lista vacia.
+// Al tener una lista vacia, el any devuelve false.
 
 
 // Aclaraciones
