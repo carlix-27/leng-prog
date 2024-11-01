@@ -52,8 +52,6 @@ fn main() {
 
 
 
-    // let mut canvas_shapes: Vec<Box<dyn Shape>> = vec![Box::new(Circle{radius}), Box::new(Rectangle{width, height})];
-
     impl Canvas {
         pub fn new(width: f64, height:f64) -> Self{
             Canvas {
