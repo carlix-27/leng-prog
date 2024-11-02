@@ -1,4 +1,4 @@
-use rusty_huffman::EncodeTable;
+use rusty_huffman::HuffmanEncoder;
 
 //
 // A main function to test a couple of compress/decompress examples
@@ -6,7 +6,7 @@ use rusty_huffman::EncodeTable;
 fn main() {
 
 
-    let et = EncodeTable::new("   abarca la vaca");
+    let et = HuffmanEncoder::new("   abarca la vaca");
     println!("{et:?}");
 
     let compressed = et.compress("         ");
