@@ -1,3 +1,5 @@
+use std::rc::Rc;
+
 fn main() {
     let stack = Stack::new();
 
@@ -27,32 +29,53 @@ fn main() {
 // devuelve una nueva pila sin modificar la original.
 
 #[derive(Debug)]
-struct Stack<T>(Option<..complete..>);
+struct Stack<T>(Option<Rc<Node<T>>>);
 
 impl<T> Clone for Stack<T> {
-    fn clone(&self) -> Self { todo!(); }
+    fn clone(&self) -> Self { // Con el clone evito alterar la referencia original del Stack
+        Stack(match self.0 {
+            None => {None}
+            Some(ref  n) => { Some(n.clone())}
+        })
+    }
+    // self.0 -> Refiere donde se encuentra el Node(T, Stack<T>). Por tanto, el stack que tendriamos
+    // hasta ese momento.
 }
 
 #[derive(Debug)]
 struct Node<T>(T, Stack<T>);
 
 impl<T> Stack<T> {
-    fn new() -> Self { todo!() } // An empty Stack
-
-    fn push(&self, value: T) -> Self {
-        Stack(Some(todo!()))
+    fn new() -> Self { // An empty Stack
+        Stack(None)
     }
 
-    fn peek(&self) -> Option<&T> { todo!() }
+    // Agrega un elemento al Stack
+    fn push(&self, value: T) -> Self {
+        Stack(Some(Rc::new(Node(value, self.clone()))))
+    }
+
+    // Ve el valor que esta en el stack
+    fn peek(&self) -> Option<&T> {
+        match &self.0 {
+            None => {None}
+            Some(rc) => {
+                Some(&rc.0)
+            }
+        }
+    }
 
     /// Si la pila está vacía, devuelve None
     /// de lo contrario, devuelve Some(tuple), donde el tuple contiene una referencia al valor
     /// en la cima de la pila junto con la Stack modificada
     fn pop(&self) -> Option<(&T, Stack<T>)> {
-        todo!()
+        match self.0 {
+            None => {None}
+            Some(ref rc) => { Some((&rc.0, rc.1.clone()))}
+        }
     }
 
     fn is_empty(&self) -> bool {
-        todo!()
+        self.0.is_none()
     }
 }
