@@ -19,6 +19,10 @@ struct Rectangle {
     height: f64
 }
 
+struct Triangle {
+    base: f64,
+    height: f64
+}
 
 
 impl Canvas {
@@ -60,6 +64,21 @@ impl Canvas {
             return true
         }
     }
+
+    // Remove Shapes
+    pub fn remove(&mut self, index: usize) -> Result<(), &'static str>{
+
+    }
+
+
+
+    // Mover formas individuales
+
+
+    // Contar formas
+
+
+    // Comparas areas
 }
 
 
@@ -69,6 +88,11 @@ pub trait Shape {
     // Dada una posicion para el centro, retornar los puntos inferior izquierdo
     // y superior derecho de un box que contenga el shape.
     fn container_box(&self, center: &Point) -> (Point, Point);
+
+
+    // Interseccion de formas
+
+
 }
 
 
@@ -94,4 +118,15 @@ impl Shape for Rectangle {
         (Point{x: center.x + self.width/2.0, y: center.y + self.height/2.0},
          Point{x: center.x - self.width/2.0, y: center.y + self.height/2.0})
     }
+}
+
+impl Shape for Triangle {
+    fn area(&self) -> f64 {
+        (self.base * self.height)/2.0
+    }
+
+    fn container_box(&self, center: &Point) -> (Point, Point) { // Es como la de un circulo, pero aplicado a un triangulo.
+        todo!()
+    }
+
 }
