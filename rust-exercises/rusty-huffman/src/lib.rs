@@ -4,37 +4,88 @@ mod heap_entry; // Módulo para manejar las entradas de la heap
 use std::collections::{BinaryHeap, BTreeMap};
 use crate::heap_entry::HeapEntry;
 use crate::trie::Trie;
+use crate::trie::Trie::Leaf;
+use crate::trie::Trie::Node;
+//
+// Crea un nuevo tipo (un struct con solo un campo)
+// en lugar de exponer el `Trie` al usuario.
+// Los métodos `compress` y `decompress` se usan como métodos de miembro del nuevo tipo
+//
+
 
 #[derive(Debug)]
 pub struct HuffmanEncoder(Trie<char>);
 
 impl HuffmanEncoder {
+    ///
+    /// `new` crea una tabla de codificación basada en la tasa de
+    /// ocurrencia de caracteres en la cadena proporcionada
+    ///
+
     // Crea una nueva tabla de codificación a partir del texto proporcionado
+    // Implementa la creación de un mapa de frecuencias
+    // y la construcción del trie de Huffman
     pub fn new(text: &str) -> HuffmanEncoder {
-        // Implementa la creación de un mapa de frecuencias
-        // y la construcción del trie de Huffman
+        let freq_map = frequency_map(text);
+        let mut heap = frequency_heap(freq_map);
+        let huffman_trie = huffman_trie(&mut heap);
+        HuffmanEncoder(huffman_trie)
     }
 
     // Comprime el texto proporcionado en un vector de bits
-    pub fn compress(&self, text: &str) -> Vec<bool> {
-        // Crea una tabla de codificación a partir del trie
-        // y utiliza esta tabla para convertir el texto en un vector de bits
+    // Crea una tabla de codificación a partir del trie
+    // y utiliza esta tabla para convertir el texto en un vector de bits
 
+    pub fn compress(&self, text: &str) -> Vec<bool> {
+        let mut table = BTreeMap::new();
+
+        create_encode_table(&self.0,vec![], &mut table);
+
+        let mut result = vec![];
+        for chr in text.chars() {
+            match table.get(&chr) {
+                None => { println!("Character '{chr}' not present in the encode table") }
+                Some(code) => { code.iter().for_each(|e| result.push(*e)) }
+            }
+        }
+        result
     }
 
     // Descomprime el vector de bits en un `String`
+    // Implementa la descompresión utilizando el trie de Huffman
+
     pub fn decompress(&self, bits: Vec<bool>) -> String {
-        // Implementa la descompresión utilizando el trie de Huffman
+        let mut result = String::new();
+        self.do_decompress(&self.0, &bits, &mut result);
+        result
     }
 
-    // Funciones auxiliares para implementar la lógica del trie
-
+    /// Internal private function to handle the recursion
+    fn do_decompress(&self, current: &Trie<char>, bits: &[bool], result: &mut String) {
+        match current {
+            Leaf(chr) => {
+                result.push(*chr);
+                if bits.len() > 0 {
+                    self.do_decompress(&self.0, bits, result);
+                }
+            }
+            Node(left, right) => {
+                self.do_decompress(
+                    if bits[0] { right } else { left },
+                    &bits[1..],
+                    result);
+            }
+        }
+    }
 }
 
 
-///
-/// Given a text creates a map based on the frequency of occurrences of each character in the input
-///
+
+// Given a text creates a map based on the frequency of occurrences of each character in the input
+
+/// Dado un texto, crea un mapa basado en la frecuencia de ocurrencias de cada carácter en la entrada
+
+
 fn frequency_map(text: &str) -> BTreeMap<char, u64> {
     let mut result = BTreeMap::new();
     for chr in text.chars() {
